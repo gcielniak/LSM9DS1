@@ -32,7 +32,7 @@
  We are also using the 400 kHz fast I2C mode by setting the TWI_FREQ  to 400000L /twi.h utility file.
  */
 //#include "Wire.h"   
-#include <i2c_t3.h>
+#include "i2c_t3.h"
 #include <SPI.h>
 //#include <Adafruit_GFX.h>
 //#include <Adafruit_PCD8544.h>
@@ -285,14 +285,17 @@ void setup()
 //  Wire.begin();
 //  TWBR = 12;  // 400 kbit/sec I2C speed for Pro Mini
   // Setup for Master mode, pins 16/17, external pullups, 400kHz for Teensy 3.1
-  Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_EXT, I2C_RATE_400);
-  delay(4000);
   Serial.begin(38400);
+  while (!Serial) ;
+  
+  Wire.begin(I2C_MASTER, 0x00, I2C_PINS_16_17, I2C_PULLUP_INT, I2C_RATE_400);
+  delay(100);
   
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
   pinMode(myLed, OUTPUT);
   digitalWrite(myLed, HIGH);
+
 /*  
   display.begin(); // Initialize the display
   display.setContrast(40); // Set the contrast
